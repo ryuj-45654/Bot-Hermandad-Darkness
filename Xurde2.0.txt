@@ -1,0 +1,105 @@
+const config = require ('./ config.json');
+const Discord = require ('discord.js');
+const util = require ('util');
+const bot = new Discord.Client ({
+    disableEveryone: cierto,
+    disabledEvents: ['TYPING_START']
+});
+
+bot.on ("listo", () => {
+    bot.user.setGame ('Juego increíble y divertido'); // puedes establecer un juego predeterminado
+    console.log (`¡El bot está en línea! \ n $ {bot.users.size} usuarios, en $ {bot.guilds.size} servidores conectados`);
+});
+
+bot.on ("guildCreate", guild => {
+    console.log (`Me uní al gremio $ {guild.name} ($ {guild.id}), propiedad de $ {guild.owner.user.username} ($ {guild.owner.user.id}) .`);
+});
+
+bot.on ("mensaje", mensaje asincrónico => { 
+
+    if (message.author.bot || message.system) return; // Ignorar bots
+    
+    if (message.channel.type === 'dm') {// Mensaje directo
+        regreso; // Manejar mensajes directos opcionalmente
+    } 
+
+    console.log (mensaje.contenido); // Registre el chat en la consola para depurar / probar
+    
+    if (message.content.indexOf (config.prefix) === 0) {// El mensaje comienza con su prefijo
+        
+        let msg = message.content.slice (config.prefix.length); // porción del prefijo en el mensaje
+
+        let args = msg.split (""); // divide el mensaje en partes por espacios
+
+        sea ​​cmd = args [0] .toLowerCase (); // establece la primera palabra como el comando en minúsculas por si acaso
+
+        args.shift (); // borra la primera palabra de los argumentos
+
+        
+        if (cmd === 'hola' || cmd === 'hola') {// el primer comando [no me gusta ping> pong]
+            message.channel.send (`Hola $ {message.author.toString ()}`);
+            regreso; 
+        }
+
+        else if (cmd === 'ping') {// ping> pong por si acaso ..
+            return message.channel.send ('pong');
+        }
+
+        // Asegúrese de que este comando siempre lo compruebe. NUNCA QUIERES QUE NADIE MÁS USE ESTE COMANDO
+        else if (cmd === "eval" && message.author.id === config.owner) {// <comprueba la identificación del autor del mensaje con la suya en config.json.
+            código constante = args.join ("");
+            return evalCmd (mensaje, código);
+        }
+
+        else {// si el comando no coincide con nada, puedes decir algo o simplemente ignorarlo
+            message.channel.send (`No sé qué comando es ese. ');
+            regreso;
+        }
+        
+    } else if (message.content.indexOf ("<@" + bot.user.id) === 0 || message.content.indexOf ("<@!" + bot.user.id) === 0) {// Captar @Mentions
+
+        return message.channel.send (`Use \` $ {config.prefix} \ `para interactuar conmigo`); // ayuda a las personas a aprender tu prefijo
+    }
+    regreso;
+});
+
+function evalCmd (mensaje, código) {
+    if (message.author.id! == config.owner) return;
+    tratar {
+        let evaled = eval (código);
+        if (typeof evaled! == "string")
+            evaluado = util.inspect (evaluado);
+            message.channel.send (clean (evaled), {code: "xl"});
+    } atrapar (err) {
+        message.channel.send (`\` ERROR \ `\` \ `\` xl \ n $ {limpiar (err)} \ n \ `\` \ ``);
+    }
+}
+función limpia (texto) {
+    if (typeof (texto)! == 'cadena') {
+        text = util.inspect (texto, {profundidad: 0});
+    }
+    texto = texto
+        .replace (/ `/ g, '`' + String.fromCharCode (8203))
+        .replace (/ @ / g, '@' + String.fromCharCode (8203))
+        .replace (config.token, 'mfa.VkO_2G4Qv3T - NO - lWetW_tjND - TOKEN - QFTm6YGtzq9PH - 4U - tG0') // No dejes que publique tu token
+    devolver texto;
+}
+
+// Detecta errores antes de que bloqueen la aplicación.
+process.on ('uncaughtException', (err) => {
+    const errorMsg = err.stack.replace (new RegExp (`$ {__ dirname} /`, 'g'), './');
+    console.error ('Excepción no detectada:', errorMsg);
+    // process.exit (1); // Eh, debería estar bien, pero ¿tal vez manejar esto?
+});
+
+process.on ('unhandledRejection', err => {
+    console.error ('Error de promesa no detectado:', err);
+    // process.exit (1); // Eh, debería estar bien, pero ¿tal vez manejar esto?
+});
+
+bot.login (config.token);
+{ 
+    "token":"NzI4NzgyNjYzMTM3MDk5Nzg3.Xv_Zvw.XTz5ZuNv9OHb3f_8HLOuWO8r-T4",
+     "owner": "142831624868855808",
+     "prefix": "+" 
+    }
